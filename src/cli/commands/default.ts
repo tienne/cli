@@ -6,11 +6,13 @@ import {
 } from '../../../package.json';
 
 export const description = `\
+==============================
 Minda-cli v${version}
 Maintainer: ${author}
+==============================
 `;
 
 export const subcommands: SubcommandDefinition[] = [
-  { name: 'run' },
-  { name: 'accept' },
+  { name: 'worker' }
 ];
+

@@ -11,7 +11,8 @@
     "tsc": "tsc",
     "tslint": "tslint",
     "lint": "tslint src/**/*.ts -c tslint.json",
-    "build": "npm run lint && rimraf bld && tsc"
+    "build": "npm run lint && rimraf bld && tsc",
+    "start": "node bld/cli/index.js"
   },
   "repository": {
     "type": "git",
