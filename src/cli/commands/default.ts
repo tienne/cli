@@ -1,14 +1,14 @@
 import { SubcommandDefinition } from 'clime';
 
 import {
-  homepage,
   version,
+  author
 } from '../../../package.json';
 
 export const description = `\
-Baseman Testing Framework v${version}
-
-${homepage}`;
+Minda-cli v${version}
+Maintainer: ${author}
+`;
 
 export const subcommands: SubcommandDefinition[] = [
   { name: 'run' },
