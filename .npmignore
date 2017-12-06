@@ -4,6 +4,7 @@
 
 /dist/design/
 /dist/test/
+/node_modules/
 
 /tsconfig.json
 /tslint.json
