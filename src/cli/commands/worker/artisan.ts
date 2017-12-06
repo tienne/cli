@@ -1,12 +1,20 @@
-import { command, Command, metadata } from 'clime';
+import { command, Command, metadata, param } from 'clime';
 import { Docker } from '../../../docker';
 import { Exec, ContainerInfo } from 'Dockerode';
+import { green } from 'chalk';
+
 @command({
-  description: 'php-worker의 queue 작업을 재시작합니다. [소스 수정 적용]'
+  description: 'php-worker에 artisan 명령을 실행시킵니다.'
 })
 export default class extends Command {
   @metadata
-  async execute() {
+  async execute(
+    @param({
+      required: true,
+      description: 'artisan으로 실행시킬 명령어',
+    })
+    command: string
+  ) {
     const docker = new Docker();
     const containers = await docker.containerList();
 
@@ -17,14 +25,17 @@ export default class extends Command {
     if (apiWorker !== undefined ) {
       const workerContainer = docker.getContainer(apiWorker.Id);
       const execOption = {
-        Cmd: ['/var/www/artisan', 'queue:restart'],
+        Cmd: [command],
         AttachStdin: false,
-        AttachStdout: true
+        AttachStdout: false
       };
 
       const exec: Exec = await workerContainer.getExec(execOption);
-      await exec.start({hijack: false}).then((stream) => {
-        console.log(stream);
+      await exec.start({hijack: false}).then((result) => {
+        console.log(green(`
+======================
+artisan ${command}
+======================`));
       });
     } else {
       throw new Error('woker가 실행되어 있지 않습니다.');
