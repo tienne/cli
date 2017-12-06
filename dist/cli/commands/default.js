@@ -4,7 +4,7 @@ const package_json_1 = require("../../../package.json");
 exports.description = `
 ==============================
 minda-cli: v${package_json_1.version}
-maintainer: ${package_json_1.author}
+maintainer: ${package_json_1.author.name}
 ==============================
 `;
 exports.subcommands = [
