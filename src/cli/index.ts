@@ -9,11 +9,11 @@ const shim = new Shim(cli);
 
 (async function() {
   await shim.execute(process.argv).then(() => {
-    //
+    console.log('execute then');
   }).catch((error) => {
     console.log(error);
     process.exit(-1);
   });
-
-  process.exit(0);
+  console.log('execute end');
+  // process.exit(0);
 })();

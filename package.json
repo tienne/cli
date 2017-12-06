@@ -35,14 +35,16 @@
   "homepage": "https://github.com/vilic/baseman",
   "dependencies": {
     "chalk": "^1.1.3",
-    "dockerode": "^2.5.3",
     "clime": "dev",
+    "dockerode": "^2.5.3",
+    "node-notifier": "^5.1.2",
     "source-map-support": "^0.4.14"
   },
   "devDependencies": {
     "@types/chalk": "^0.4.31",
     "@types/dockerode": "^2.5.1",
     "@types/node": "^7.0.5",
+    "@types/node-notifier": "0.0.28",
     "rimraf": "^2.6.1",
     "tslint": "^4.5.1",
     "typescript": "~2.2.1"

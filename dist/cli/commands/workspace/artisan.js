@@ -29,7 +29,7 @@ let default_1 = class extends clime_1.Command {
             const docker = new docker_1.Docker();
             const containers = yield docker.containerList();
             const apiWorker = containers.find((containerInfo) => {
-                return containerInfo.Image === 'minda-workspace';
+                return containerInfo.Image === 'minda-api-workspace';
             });
             if (apiWorker !== undefined) {
                 const workerContainer = docker.getContainer(apiWorker.Id);

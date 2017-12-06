@@ -17,12 +17,13 @@ const shim = new clime_1.Shim(cli);
 (function () {
     return __awaiter(this, void 0, void 0, function* () {
         yield shim.execute(process.argv).then(() => {
-            //
+            console.log('execute then');
         }).catch((error) => {
             console.log(error);
             process.exit(-1);
         });
-        process.exit(0);
+        console.log('execute end');
+        // process.exit(0);
     });
 })();
 //# sourceMappingURL=index.js.map
