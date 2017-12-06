@@ -25,9 +25,9 @@ export default class extends Command {
     if (apiWorker !== undefined ) {
       const workerContainer = docker.getContainer(apiWorker.Id);
       const execOption = {
-        Cmd: [command],
+        Cmd: ['/var/www/artisan', command],
         AttachStdin: false,
-        AttachStdout: false
+        AttachStdout: true
       };
 
       const exec: Exec = await workerContainer.getExec(execOption);
