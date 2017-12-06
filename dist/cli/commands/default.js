@@ -8,6 +8,7 @@ maintainer: ${package_json_1.author.name}
 ==============================
 `;
 exports.subcommands = [
-    { name: 'worker' }
+    { name: 'worker' },
+    { name: 'workspace' }
 ];
 //# sourceMappingURL=default.js.map

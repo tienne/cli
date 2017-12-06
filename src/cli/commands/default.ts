@@ -9,5 +9,6 @@ maintainer: ${author.name}
 `;
 
 export const subcommands: SubcommandDefinition[] = [
-  { name: 'worker' }
+  { name: 'worker' },
+  { name: 'workspace' }
 ];

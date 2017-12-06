@@ -4,14 +4,14 @@ import { Exec, ContainerInfo } from 'Dockerode';
 import { green } from 'chalk';
 
 @command({
-  description: 'php-worker에 artisan 명령을 실행시킵니다.'
+  description: 'workspace 에 artisan 명령을 실행시킵니다.'
 })
 export default class extends Command {
   @metadata
   async execute(
     @param({
       required: true,
-      description: 'artisan으로 실행시킬 명령어',
+      description: 'artisan 으로 실행시킬 명령어',
     })
     command: string
   ) {
@@ -19,7 +19,7 @@ export default class extends Command {
     const containers = await docker.containerList();
 
     const apiWorker = containers.find((containerInfo: ContainerInfo) => {
-      return containerInfo.Image === 'minda-api-worker';
+      return containerInfo.Image === 'minda-workspace';
     });
 
     if (apiWorker !== undefined ) {
@@ -38,7 +38,7 @@ artisan ${command}
 ======================`));
       });
     } else {
-      throw new Error('woker 가 실행되어 있지 않습니다.');
+      throw new Error('workspace 가 실행되어 있지 않습니다.');
     }
   }
 }

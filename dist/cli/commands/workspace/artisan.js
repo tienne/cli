@@ -29,7 +29,7 @@ let default_1 = class extends clime_1.Command {
             const docker = new docker_1.Docker();
             const containers = yield docker.containerList();
             const apiWorker = containers.find((containerInfo) => {
-                return containerInfo.Image === 'minda-api-worker';
+                return containerInfo.Image === 'minda-workspace';
             });
             if (apiWorker !== undefined) {
                 const workerContainer = docker.getContainer(apiWorker.Id);
@@ -47,7 +47,7 @@ artisan ${command}
                 });
             }
             else {
-                throw new Error('woker 가 실행되어 있지 않습니다.');
+                throw new Error('workspace 가 실행되어 있지 않습니다.');
             }
         });
     }
@@ -56,7 +56,7 @@ __decorate([
     clime_1.metadata,
     __param(0, clime_1.param({
         required: true,
-        description: 'artisan으로 실행시킬 명령어',
+        description: 'artisan 으로 실행시킬 명령어',
     })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -64,7 +64,7 @@ __decorate([
 ], default_1.prototype, "execute", null);
 default_1 = __decorate([
     clime_1.command({
-        description: 'php-worker에 artisan 명령을 실행시킵니다.'
+        description: 'workspace 에 artisan 명령을 실행시킵니다.'
     })
 ], default_1);
 exports.default = default_1;
