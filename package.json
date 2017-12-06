@@ -25,7 +25,9 @@
     "test",
     "framework"
   ],
-  "author": "DavidKwon",
+  "author": {
+    "name": "DavidKwon"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/vilic/baseman/issues"

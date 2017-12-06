@@ -4,7 +4,7 @@ import { version, author } from '../../../package.json';
 export const description = `
 ==============================
 minda-cli: v${version}
-maintainer: ${author}
+maintainer: ${author.name}
 ==============================
 `;
 
