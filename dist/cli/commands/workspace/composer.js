@@ -38,7 +38,7 @@ let default_1 = class extends clime_1.Command {
                     AttachStdout: true
                 };
                 const exec = yield workerContainer.getExec(execOption);
-                yield exec.start({ hijack: false }).then((result) => __awaiter(this, void 0, void 0, function* () {
+                yield exec.start({ hijack: true }).then((result) => __awaiter(this, void 0, void 0, function* () {
                     result.output.setEncoding('UTF-8');
                     result.output.on('data', (chunk) => {
                         console.log(chunk.toString());

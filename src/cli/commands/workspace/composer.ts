@@ -32,7 +32,7 @@ export default class extends Command {
       };
 
       const exec: Exec = await workerContainer.getExec(execOption);
-      await exec.start({hijack: false}).then(async (result) => {
+      await exec.start({hijack: true}).then(async (result) => {
         result.output.setEncoding('UTF-8');
         result.output.on('data', (chunk: any) => {
           console.log(chunk.toString());
