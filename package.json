@@ -1,6 +1,6 @@
 {
   "name": "minda-cli",
-  "version": "0.1.0-alhpa-1",
+  "version": "0.1.0-alhpa-2",
   "description": "minda-cli",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
