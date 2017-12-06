@@ -2,8 +2,8 @@
 /typings/
 /test/
 
-/bld/design/
-/bld/test/
+/dist/design/
+/dist/test/
 
 /tsconfig.json
 /tslint.json

@@ -1,18 +1,18 @@
 {
   "name": "minda-cli",
-  "version": "0.1.0-dev.1",
+  "version": "0.1.0-alhpa-1",
   "description": "minda-cli",
-  "main": "bld/index.js",
-  "typings": "bld/index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "bin": {
-    "minda": "bld/cli/index.js"
+    "minda": "dist/cli/index.js"
   },
   "scripts": {
     "tsc": "tsc",
     "tslint": "tslint",
     "lint": "tslint src/**/*.ts -c tslint.json",
-    "build": "npm run lint && rimraf bld && tsc",
-    "start": "node bld/cli/index.js"
+    "build": "npm run lint && rimraf dist && tsc",
+    "start": "node dist/cli/index.js"
   },
   "repository": {
     "type": "git",

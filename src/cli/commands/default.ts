@@ -1,18 +1,13 @@
 import { SubcommandDefinition } from 'clime';
+import { version, author } from '../../../package.json';
 
-import {
-  version,
-  author
-} from '../../../package.json';
-
-export const description = `\
+export const description = `
 ==============================
-Minda-cli v${version}
-Maintainer: ${author}
+minda-cli: v${version}
+maintainer: ${author}
 ==============================
 `;
 
 export const subcommands: SubcommandDefinition[] = [
   { name: 'worker' }
 ];
-

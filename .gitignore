@@ -1,8 +1,7 @@
 /node_modules/
-/bld/
+/dist/
 
 /src/design/
 
 npm-debug.log
-/.idea/
-/.idea/*
+.idea/**/*
