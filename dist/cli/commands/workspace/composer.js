@@ -23,7 +23,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const clime_1 = require("clime");
 const docker_1 = require("../../../docker");
 let default_1 = class extends clime_1.Command {
-    execute(command) {
+    execute(commands) {
         return __awaiter(this, void 0, void 0, function* () {
             const docker = new docker_1.Docker();
             const containers = yield docker.containerList();
@@ -31,22 +31,28 @@ let default_1 = class extends clime_1.Command {
                 return containerInfo.Image === 'minda-api-workspace';
             });
             if (apiWorker !== undefined) {
-                const workerContainer = docker.getContainer(apiWorker.Id);
+                const container = docker.getContainer(apiWorker.Id);
                 const execOption = {
-                    Cmd: ['composer', ...command],
+                    Cmd: ['composer', ...commands],
                     AttachStdin: false,
-                    AttachStdout: true
+                    AttachStdout: true,
+                    AttachStderr: true
                 };
-                const exec = yield workerContainer.getExec(execOption);
-                yield exec.start({ hijack: true }).then((result) => __awaiter(this, void 0, void 0, function* () {
-                    result.output.setEncoding('UTF-8');
-                    result.output.on('data', (chunk) => {
-                        console.log(chunk.toString());
-                    });
-                    yield result.output.on('close', function () {
-                        console.log('end');
-                    });
-                }));
+                const exec = yield container.getExec(execOption);
+                const result = yield container.getExecStream(exec, { hijack: false, stdout: true, stdin: false, stderr: true });
+                const stream = result.output;
+                container.getContainer().modem.demuxStream(stream, process.stdout, process.stderr);
+                stream.on('end', () => {
+                    console.log(`
+====================================================
+composer ${commands.join(' ')} 완료
+=====================================================`);
+                    stream.destroy();
+                    process.exit(0);
+                });
+                stream.on('close', () => {
+                    process.exit(0);
+                });
             }
             else {
                 throw new Error('workspace 가 실행되어 있지 않습니다.');
@@ -56,11 +62,7 @@ let default_1 = class extends clime_1.Command {
 };
 __decorate([
     clime_1.metadata,
-    __param(0, clime_1.params({
-        type: String,
-        required: true,
-        description: 'composer 로 실행시킬 명령어',
-    })),
+    __param(0, clime_1.params({ type: String, required: true, description: 'composer 로 실행시킬 명령어' })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Array]),
     __metadata("design:returntype", Promise)

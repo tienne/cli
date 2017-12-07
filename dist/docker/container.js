@@ -18,9 +18,22 @@ class Container {
             this.container.stop();
         }
     }
+    getContainer() {
+        return this.container;
+    }
+    getAttachStream(options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.container.attach(options);
+        });
+    }
     getExec(options) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.container.exec(options);
+        });
+    }
+    getExecStream(exec, options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield exec.start(options);
         });
     }
 }

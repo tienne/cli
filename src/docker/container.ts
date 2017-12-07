@@ -17,7 +17,20 @@ export class Container {
     }
   }
 
+  getContainer() {
+    return this.container;
+  }
+
+  async getAttachStream(options: {}) {
+    return await this.container.attach(options);
+  }
+
   async getExec(options: {}) {
     return await this.container.exec(options);
   }
+
+  async getExecStream(exec: Exec, options: {}) {
+    return await exec.start(options);
+  }
+
 }

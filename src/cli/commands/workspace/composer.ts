@@ -2,6 +2,7 @@ import { command, Command, metadata, params } from 'clime';
 import { Docker } from '../../../docker';
 import { Exec, ContainerInfo } from 'Dockerode';
 import { green } from 'chalk';
+import ReadableStream = NodeJS.ReadableStream;
 
 @command({
   description: 'workspace 에 composer 명령을 실행시킵니다.'
@@ -9,12 +10,8 @@ import { green } from 'chalk';
 export default class extends Command {
   @metadata
   async execute(
-    @params({
-      type: String,
-      required: true,
-      description: 'composer 로 실행시킬 명령어',
-    })
-    command: string[]
+    @params({type: String, required: true, description: 'composer 로 실행시킬 명령어'})
+    commands: string []
   ) {
     const docker = new Docker();
     const containers = await docker.containerList();
@@ -24,23 +21,34 @@ export default class extends Command {
     });
 
     if (apiWorker !== undefined ) {
-      const workerContainer = docker.getContainer(apiWorker.Id);
+      const container = docker.getContainer(apiWorker.Id);
       const execOption = {
-        Cmd: ['composer', ...command],
+        Cmd: ['composer', ...commands],
         AttachStdin: false,
-        AttachStdout: true
+        AttachStdout: true,
+        AttachStderr: true
       };
 
-      const exec: Exec = await workerContainer.getExec(execOption);
-      await exec.start({hijack: true}).then(async (result) => {
-        result.output.setEncoding('UTF-8');
-        result.output.on('data', (chunk: any) => {
-          console.log(chunk.toString());
-        });
-        await result.output.on('close', function () {
-          console.log('end');
-        });
+      const exec: Exec = await container.getExec(execOption);
+      const result = await container.getExecStream(exec, {hijack: false, stdout: true, stdin: false, stderr: true});
+      const stream = result.output;
+
+      container.getContainer().modem.demuxStream(stream, process.stdout, process.stderr);
+
+      stream.on('end', () => {
+        console.log(`
+====================================================
+composer ${commands.join(' ')} 완료
+=====================================================`
+        );
+        stream.destroy();
+        process.exit(0);
       });
+
+      stream.on('close', () => {
+        process.exit(0);
+      });
+
     } else {
       throw new Error('workspace 가 실행되어 있지 않습니다.');
     }

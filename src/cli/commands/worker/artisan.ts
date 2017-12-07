@@ -1,4 +1,4 @@
-import { command, Command, metadata, param } from 'clime';
+import {command, Command, metadata, param, params} from 'clime';
 import { Docker } from '../../../docker';
 import { Exec, ContainerInfo } from 'Dockerode';
 import { green } from 'chalk';
@@ -9,11 +9,8 @@ import { green } from 'chalk';
 export default class extends Command {
   @metadata
   async execute(
-    @param({
-      required: true,
-      description: 'artisan으로 실행시킬 명령어',
-    })
-    command: string
+    @params({type: String, required: true, description: 'artisan 으로 실행시킬 명령어'})
+    commands: string []
   ) {
     const docker = new Docker();
     const containers = await docker.containerList();
@@ -23,19 +20,32 @@ export default class extends Command {
     });
 
     if (apiWorker !== undefined ) {
-      const workerContainer = docker.getContainer(apiWorker.Id);
+      const container = docker.getContainer(apiWorker.Id);
       const execOption = {
-        Cmd: ['/var/www/artisan', command],
+        Cmd: ['/var/www/artisan', ...commands],
         AttachStdin: false,
-        AttachStdout: true
+        AttachStdout: true,
+        AttachStderr: true
       };
 
-      const exec: Exec = await workerContainer.getExec(execOption);
-      await exec.start({hijack: false}).then((result) => {
-        console.log(green(`
-======================
-artisan ${command}
-======================`));
+      const exec: Exec = await container.getExec(execOption);
+      const result = await container.getExecStream(exec, {hijack: false, stdout: true, stdin: false, stderr: true});
+      const stream = result.output;
+
+      container.getContainer().modem.demuxStream(stream, process.stdout, process.stderr);
+
+      stream.on('end', () => {
+        console.log(`
+====================================================
+artisan ${commands.join(' ')} 완료
+=====================================================`
+        );
+        stream.destroy();
+        process.exit(0);
+      });
+
+      stream.on('close', () => {
+        process.exit(0);
       });
     } else {
       throw new Error('woker 가 실행되어 있지 않습니다.');
