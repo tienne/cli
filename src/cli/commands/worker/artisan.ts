@@ -1,7 +1,6 @@
-import {command, Command, metadata, param, params} from 'clime';
+import {command, Command, metadata, params} from 'clime';
 import { Docker } from '../../../docker';
 import { Exec, ContainerInfo } from 'Dockerode';
-import { green } from 'chalk';
 
 @command({
   description: 'php-worker에 artisan 명령을 실행시킵니다.'
